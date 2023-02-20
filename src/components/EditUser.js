@@ -1,17 +1,17 @@
-import React, {useState, useContext, useEffect} from 'react';
-import {GlobalContext} from "../context/GlobalState";
-import {Link, useNavigate, useParams} from "react-router-dom";
-import {Form, FormGroup, Label, Input, Button} from "reactstrap";
+import React, {useState, useEffect} from 'react';
+import {Link} from "react-router-dom";
+import {Form, Input, Button} from "reactstrap";
 import userService from '../services/userService';
+import {userQuery} from '../stores/userStore';
+import {useRecoilValueLoadable} from 'recoil';
 
 export const EditUser = (props) => {
-    
-    const params = useParams();
-    const {users} = useContext(GlobalContext);
-    const [selectedUser, setSelectedUser] = useState({id: '', name: ''})
-    const history = useNavigate();
-    const currentUserId = props.match.params.id;
-    
+
+    const currentUserId = props.id;
+    const loadingUsers = useRecoilValueLoadable(userQuery);
+    const users = loadingUsers.contents;
+    const [selectedUser, setSelectedUser] = useState({id: '', name: ''});
+
     const editUser = async (requestData, id) => {
         await userService.update(requestData, id)
     };
@@ -20,7 +20,7 @@ export const EditUser = (props) => {
         const userId = currentUserId;
         const selectedUser = users.find(user => user.id === userId);
         setSelectedUser(selectedUser);
-    }, [currentUserId, users])
+    }, [currentUserId, users]);
 
     const onChange = (e) => {
         setSelectedUser({
@@ -32,15 +32,18 @@ export const EditUser = (props) => {
     const onSubmit = (e) => {
         e.preventDefault();
         editUser(selectedUser);
-        history.push("/")
     }
 
     return (
         <div>
-                    <Form >
-                        <FormGroup onSubmit={onSubmit}>
-                            <Input type="text" value={selectedUser.name} onChange={onChange} name="name" placeholder="Enter user" required="required"></Input>
-                        </FormGroup>
+                    <Form onSubmit={onSubmit}>
+                            <Input 
+                            type="text" 
+                            value={selectedUser.name}
+                            onChange={onChange} 
+                            name="name" 
+                            placeholder="Enter user" 
+                            required="required"></Input>
                         <Button type="submit">Edit Name</Button>
                         <Link to="/" className="btn btn-danger ml-2">Cancel</Link>
                     </Form>
