@@ -22,31 +22,68 @@ export const EditUser = (props) => {
         setSelectedUser(selectedUser);
     }, [currentUserId, users]);
 
-    const onChange = (e) => {
+    const onChangeName = (e) => {
         setSelectedUser({
             ...selectedUser,
             [e.target.name]: e.target.value
         })
-    }
+    };
+
+    // const onChangeUsername = (e) => {
+    //     setSelectedUser({
+    //         ...selectedUser,
+    //         [e.target.username]: e.target.value
+    //     })
+    // };
 
     const onSubmit = (e) => {
         e.preventDefault();
-        editUser(selectedUser);
-    }
+        editUser(selectedUser, selectedUser.id);
+    };
 
     return (
+        <div>
         <div>
                     <Form onSubmit={onSubmit}>
                             <Input 
                             type="text" 
                             value={selectedUser.name}
+                            onChange={onChangeName} 
+                            name="name" 
+                            placeholder="Enter user" 
+                            required="required"></Input>
+                              {/* <Input 
+                            type="text" 
+                            value={selectedUser.username}
+                            onChange={onChangeUsername} 
+                            name="name" 
+                            placeholder="Enter user" 
+                            required="required"></Input> */}
+                                  {/* <Input 
+                            type="text" 
+                            value={selectedUser.email}
                             onChange={onChange} 
                             name="name" 
                             placeholder="Enter user" 
                             required="required"></Input>
-                        <Button type="submit">Edit Name</Button>
+                                      <Input 
+                            type="text" 
+                            value={selectedUser.phone}
+                            onChange={onChange} 
+                            name="name" 
+                            placeholder="Enter user" 
+                            required="required"></Input>
+                                              <Input 
+                            type="text" 
+                            value={selectedUser.website}
+                            onChange={onChange} 
+                            name="name" 
+                            placeholder="Enter user" 
+                            required="required"></Input> */}
+                        <Button type="submit">Save</Button>
                         <Link to="/" className="btn btn-danger ml-2">Cancel</Link>
                     </Form>
+            </div>
             </div>
     )
 }
