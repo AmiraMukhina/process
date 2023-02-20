@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
-// import {Link} from "react-router-dom";
 import {ListGroup, ListGroupItem, Button} from "reactstrap";
 import {userQuery} from '../stores/userStore';
 import {useRecoilValueLoadable} from 'recoil';
 import userService from '../services/userService';
 import {EditUser} from './EditUser';
 
-// export const UserList = () => {
 function UserList() {
 
-    const [hideLightbox, setHideLightbox] = useState(true);
+    const [hideEditName, setHideEditName] = useState(true);
+    // const [hideEditUsername, setHideEditUsername] = useState(true);
 
     const loadingUsers = useRecoilValueLoadable(userQuery);
     const persons = loadingUsers.contents;
@@ -21,20 +20,40 @@ function UserList() {
     return (loadingUsers.state === 'hasValue' && (
         <ListGroup className="m-4">
             {
-                persons.length > 0? (
-                <>
-                 {persons.map(user => (
+                persons.length > 0
+                    ? (<> {
+                        persons.map(user => (
                             <ListGroupItem
-                                className="d-flex align-items-center justify-content-between m-2 border"
+                                className="card d-flex align-items-start justify-content-between m-2 p-3 border"
                                 key={user.id}>
-                                <strong>{user.name}</strong>
-                                <div className="ml-auto">
-                                    <Button onClick={() => setHideLightbox(false)} color="warning">Edit</Button>
-                                    <Button onClick={() => removeUser(user.id)} color="danger">Delete</Button>
 
-                                    <div className={`lightbox ${hideLightbox? "hide-lightbox": ""}`}>
+                                <strong>{user.name}</strong>
+                                <div className="ml-auto"></div>
+                                <p>Username:
+                                    <strong>
+                                        {user.username}</strong>
+                                </p>
+                                <p>Email:
+                                    <strong>{user.email}</strong>
+                                </p>
+                                <p>Phone:<strong>
+                                        {user.phone}</strong>
+                                </p>
+                                <p>Website:
+                                    <strong>{user.website}</strong>
+                                </p>
+
+                                <div className="ml-auto">
+                                    <Button onClick={() => setHideEditName(false)} color="warning">Edit</Button>
+
+                                    <div
+                                        className={`lightbox ${hideEditName
+                                            ? "hide-lightbox"
+                                            : ""}`}>
                                         <EditUser id={user.id}/>
                                     </div>
+                                    <Button onClick={() => removeUser(user.id)} color="danger">Delete</Button>
+
                                 </div>
                             </ListGroupItem>
                         ))
