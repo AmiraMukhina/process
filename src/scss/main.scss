@@ -1,0 +1,12 @@
+@import "variables";
+@import "bootstrap";
+@import "fonts";
+
+// If you do not want to load the customized bootstrap version, just use the following line.
+// @import "~bootstrap/scss/bootstrap";
+
+body {
+    // background-color: rgb(255, 255, 255);
+}
+
+@import "components/slider";
